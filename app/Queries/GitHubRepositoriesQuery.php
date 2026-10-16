@@ -14,7 +14,7 @@ final readonly class GitHubRepositoriesQuery
      */
     public function handle(User $user): array
     {
-        return $user->githubRepositories()->orderBy('full_name')->get()
+        return array_values($user->githubRepositories()->orderBy('full_name')->get()
             ->map(fn (GitHubRepository $repository): array => [
                 'id' => $repository->id,
                 'full_name' => $repository->full_name,
@@ -22,6 +22,6 @@ final readonly class GitHubRepositoriesQuery
                 'webhook_url' => route('github-webhook', $repository),
                 'webhook_secret' => (string) $repository->webhook_secret,
             ])
-            ->all();
+            ->all());
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\GitHubWebhookDeliveryFactory;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Attributes\WithoutIncrementing;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[WithoutIncrementing]
 final class GitHubWebhookDelivery extends Model
 {
-    use HasFactory;
+    /** @use HasFactory<GitHubWebhookDeliveryFactory> */
     use HasFactory;
 
     /** @return array<string, string> */

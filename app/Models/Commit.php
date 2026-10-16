@@ -9,6 +9,7 @@ use App\Queries\CommitBuilder;
 use App\Services\CodeSpans;
 use Carbon\CarbonInterface;
 use Database\Factories\CommitFactory;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\UseEloquentBuilder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -46,6 +47,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Collection<int, CommitImage> $images
  * @property-read Collection<int, Commit> $seriesParts
  */
+#[Hidden(['github_delivery_id'])]
 #[UseEloquentBuilder(CommitBuilder::class)]
 final class Commit extends Model
 {

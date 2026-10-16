@@ -70,11 +70,4 @@ final class CreateGitHubWebhookRequest extends FormRequest
     {
         return $this->json()->all();
     }
-
-    public function repository(): ?GitHubRepository
-    {
-        $repository = $this->route('repository');
-
-        return $repository instanceof GitHubRepository ? $repository : null;
-    }
 }

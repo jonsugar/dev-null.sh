@@ -36,7 +36,7 @@ final class CreateGitHubRepositoryRequest extends FormRequest
 
     public function fullName(): string
     {
-        return mb_strtolower(mb_trim((string) $this->validated('full_name')));
+        return mb_strtolower(mb_trim($this->string('full_name')->value()));
     }
 
     /** @return list<string> */

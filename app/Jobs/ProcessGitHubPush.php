@@ -56,14 +56,24 @@ final class ProcessGitHubPush implements ShouldQueue
             return;
         }
 
-        $messages = collect(data_get($payload, 'commits', []))
-            ->filter(fn (mixed $commit): bool => is_array($commit) && is_string(data_get($commit, 'message')))
-            ->pluck('message')
-            ->map(fn (string $message): string => Str::squish($message))
-            ->filter()
-            ->values();
+        $commits = data_get($payload, 'commits', []);
+        $messages = [];
 
-        if ($messages->isEmpty()) {
+        if (is_array($commits)) {
+            foreach ($commits as $commit) {
+                $message = is_array($commit) ? data_get($commit, 'message') : null;
+
+                if (is_string($message)) {
+                    $message = Str::squish($message);
+
+                    if ($message !== '') {
+                        $messages[] = $message;
+                    }
+                }
+            }
+        }
+
+        if ($messages === []) {
             $delivery->forceFill(['processed_at' => now()])->save();
 
             return;
@@ -74,7 +84,7 @@ final class ProcessGitHubPush implements ShouldQueue
         $sourceUrl = is_string($before) && is_string($after)
             ? "https://github.com/{$repository->full_name}/compare/{$before}...{$after}"
             : "https://github.com/{$repository->full_name}";
-        $summary = 'Pushed '.$messages->count().' commits to '.$repository->full_name.': '.$messages->implode(' · ');
+        $summary = 'Pushed '.count($messages).' commits to '.$repository->full_name.': '.implode(' · ', $messages);
         $body = Str::limit($summary, max(3, 280 - mb_strlen($sourceUrl) - 2), '…')."\n{$sourceUrl}";
 
         if ($repository->github_repository_id === null) {

@@ -46,6 +46,7 @@ function githubWebhookCall(
 
     return $test->call('POST', route('github-webhook', $repository, false), server: [
         'CONTENT_TYPE' => 'application/json',
+        'HTTP_ACCEPT' => 'application/json',
         'HTTP_X_GITHUB_DELIVERY' => $deliveryId,
         'HTTP_X_GITHUB_EVENT' => $event,
         'HTTP_X_HUB_SIGNATURE_256' => $signature,
@@ -63,11 +64,8 @@ function watchedRepository(User $user): GitHubRepository
 
 function createPushDelivery(User $user, GitHubRepository $repository, string $branch = 'main'): GitHubWebhookDelivery
 {
-    return GitHubWebhookDelivery::query()->create([
-        'delivery_id' => (string) Str::uuid(),
-        'event' => 'push',
+    return GitHubWebhookDelivery::factory()->for($repository, 'repository')->create([
         'payload' => githubPushPayload($user, $repository, $branch),
-        'github_repository_watch_id' => $repository->id,
     ]);
 }
 
@@ -225,4 +223,166 @@ it('lets the author update a pending GitHub post but not someone elses', functio
 
     $this->actingAs($other)->put(route('github-post.update', $commit), ['body' => 'A different post'])
         ->assertNotFound();
+});
+
+it('returns 401 for webhooks missing an authentication header', function (string $header): void {
+    Queue::fake(ProcessGitHubPush::class);
+    $repository = watchedRepository(User::factory()->create());
+    $raw = json_encode(['zen' => 'test'], JSON_THROW_ON_ERROR);
+    $server = [
+        'CONTENT_TYPE' => 'application/json',
+        'HTTP_ACCEPT' => 'application/json',
+        'HTTP_X_GITHUB_DELIVERY' => (string) Str::uuid(),
+        'HTTP_X_GITHUB_EVENT' => 'ping',
+        'HTTP_X_HUB_SIGNATURE_256' => 'sha256='.hash_hmac('sha256', $raw, (string) $repository->webhook_secret),
+    ];
+    unset($server[$header]);
+
+    $this->call('POST', route('github-webhook', $repository, false), server: $server, content: $raw)
+        ->assertUnauthorized();
+
+    expect(GitHubWebhookDelivery::query()->count())->toBe(0);
+    Queue::assertNothingPushed();
+})->with([
+    'signature' => 'HTTP_X_HUB_SIGNATURE_256',
+    'delivery identifier' => 'HTTP_X_GITHUB_DELIVERY',
+    'event name' => 'HTTP_X_GITHUB_EVENT',
+]);
+
+it('returns 401 for a webhook with an invalid delivery identifier', function (): void {
+    Queue::fake(ProcessGitHubPush::class);
+    $user = User::factory()->create();
+    $repository = watchedRepository($user);
+
+    githubWebhookCall($this, $repository, githubPushPayload($user, $repository), 'invalid-delivery')
+        ->assertUnauthorized();
+
+    expect(GitHubWebhookDelivery::query()->count())->toBe(0);
+    Queue::assertNothingPushed();
+});
+
+it('returns 422 for a signed push without the required payload fields', function (): void {
+    Queue::fake(ProcessGitHubPush::class);
+    $repository = watchedRepository(User::factory()->create());
+
+    githubWebhookCall($this, $repository, [], (string) Str::uuid())
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['repository.id', 'repository.full_name', 'sender.id', 'ref']);
+
+    expect(GitHubWebhookDelivery::query()->count())->toBe(0);
+    Queue::assertNothingPushed();
+});
+
+it('marks malformed or unrelated stored pushes as processed without creating a post', function (string $field, mixed $value): void {
+    $user = User::factory()->create();
+    $repository = watchedRepository($user);
+    $delivery = createPushDelivery($user, $repository);
+    $payload = $delivery->payload;
+    data_set($payload, $field, $value);
+    $delivery->update(['payload' => $payload]);
+
+    dispatch_sync(new ProcessGitHubPush($delivery->delivery_id));
+
+    expect(Commit::query()->count())->toBe(0)
+        ->and($delivery->refresh()->processed_at)->not->toBeNull();
+})->with([
+    'invalid sender identifier' => ['sender.id', 'invalid'],
+    'invalid repository identifier' => ['repository.id', null],
+    'invalid repository name' => ['repository.full_name', []],
+    'invalid branch reference' => ['ref', null],
+    'unknown GitHub account' => ['sender.id', 2_147_483_647],
+    'another repository identifier' => ['repository.id', 42_002],
+    'another repository name' => ['repository.full_name', 'example/another-project'],
+    'deleted branch' => ['deleted', true],
+]);
+
+it('does not create a post when a stored push has no usable commit messages', function (mixed $commits): void {
+    $user = User::factory()->create();
+    $repository = watchedRepository($user);
+    $delivery = createPushDelivery($user, $repository);
+    $payload = $delivery->payload;
+    $payload['commits'] = $commits;
+    $delivery->update(['payload' => $payload]);
+
+    dispatch_sync(new ProcessGitHubPush($delivery->delivery_id));
+
+    expect(Commit::query()->count())->toBe(0)
+        ->and($delivery->refresh()->processed_at)->not->toBeNull();
+})->with([
+    'empty commits' => [[]],
+    'invalid collection' => ['invalid'],
+    'missing or blank messages' => [[null, ['message' => null], ['message' => " \n "]]],
+]);
+
+it('summarizes usable messages while skipping malformed commit entries', function (): void {
+    $user = User::factory()->create();
+    $repository = watchedRepository($user);
+    $delivery = createPushDelivery($user, $repository);
+    $payload = $delivery->payload;
+    $payload['commits'] = [
+        ['message' => ' Build   feature '],
+        ['message' => false],
+        'invalid entry',
+        [],
+        ['message' => '   '],
+        ['message' => '0'],
+    ];
+    $delivery->update(['payload' => $payload]);
+
+    dispatch_sync(new ProcessGitHubPush($delivery->delivery_id));
+
+    expect(Commit::query()->sole()->body)
+        ->toContain('Pushed 2 commits to example/project: Build feature · 0');
+});
+
+it('links to the repository when a push has no comparison references', function (): void {
+    $user = User::factory()->create();
+    $repository = watchedRepository($user);
+    $delivery = createPushDelivery($user, $repository);
+    $payload = $delivery->payload;
+    unset($payload['before'], $payload['after']);
+    $delivery->update(['payload' => $payload]);
+
+    dispatch_sync(new ProcessGitHubPush($delivery->delivery_id));
+
+    $commit = Commit::query()->sole();
+    expect($commit->source_url)->toBe('https://github.com/example/project')
+        ->and($commit->body)->toContain("\nhttps://github.com/example/project");
+});
+
+it('records the repository identifier on the first push and limits a long summary', function (): void {
+    $user = User::factory()->create();
+    $repository = watchedRepository($user);
+    $repository->update(['github_repository_id' => null]);
+
+    $delivery = createPushDelivery($user, $repository);
+    $payload = $delivery->payload;
+    $payload['repository'] = ['id' => 42_001, 'full_name' => 'Example/Project'];
+    $payload['commits'] = [['message' => str_repeat('Release changes ', 100)]];
+    $delivery->update(['payload' => $payload]);
+
+    dispatch_sync(new ProcessGitHubPush($delivery->delivery_id));
+
+    $commit = Commit::query()->sole();
+    expect($repository->refresh()->github_repository_id)->toBe(42_001)
+        ->and(mb_strlen($commit->body))->toBeLessThanOrEqual(280)
+        ->and($commit->body)->toContain('…', '/compare/');
+});
+
+it('preserves an existing post when a delivery is retried before being marked processed', function (): void {
+    $user = User::factory()->create();
+    $repository = watchedRepository($user);
+    $delivery = createPushDelivery($user, $repository);
+    $commit = Commit::factory()->for($user)->pending()->create([
+        'github_delivery_id' => $delivery->delivery_id,
+        'source_url' => 'https://github.com/example/project',
+        'body' => 'An edited post that must survive a retry',
+    ]);
+
+    dispatch_sync(new ProcessGitHubPush($delivery->delivery_id));
+
+    $saved = Commit::query()->sole();
+    expect($saved->id)->toBe($commit->id)
+        ->and($saved->body)->toBe('An edited post that must survive a retry')
+        ->and($delivery->refresh()->processed_at)->not->toBeNull();
 });

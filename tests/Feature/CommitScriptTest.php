@@ -6,6 +6,7 @@ use App\Dto\SshPublicKey;
 use Illuminate\Contracts\Process\ProcessResult;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Support\Str;
  */
 beforeEach(function (): void {
     Process::preventStrayProcesses(false);
+    URL::useOrigin('https://devnull.example');
+    URL::forceHttps();
 
     $this->sandbox = sys_get_temp_dir().'/devnull-script-test-'.Str::random(10);
     $this->publicKey = SshPublicKey::fromOpenSsh(sshFixture('ed25519.pub'));

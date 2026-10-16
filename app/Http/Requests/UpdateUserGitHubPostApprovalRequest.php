@@ -14,6 +14,7 @@ final class UpdateUserGitHubPostApprovalRequest extends FormRequest
         return $this->user() instanceof User;
     }
 
+    /** @return array<string, array<int, mixed>|string> */
     public function rules(): array
     {
         return [

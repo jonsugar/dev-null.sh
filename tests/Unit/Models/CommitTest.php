@@ -9,7 +9,10 @@ use App\Models\LinkPreview;
 use App\Models\User;
 
 test('to array', function (): void {
-    $commit = Commit::factory()->create()->refresh();
+    $commit = Commit::factory()->create([
+        'source_url' => 'https://github.com/example/project/compare/before...after',
+        'github_delivery_id' => '9a6360b3-e34b-4616-b091-a9e2beb7ec70',
+    ])->refresh();
 
     expect(array_keys($commit->toArray()))
         ->toBe([
@@ -25,6 +28,7 @@ test('to array', function (): void {
             'series_id',
             'series_position',
             'series_size',
+            'source_url',
             'body_segments',
         ]);
 });

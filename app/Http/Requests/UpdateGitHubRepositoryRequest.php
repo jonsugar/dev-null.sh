@@ -21,6 +21,7 @@ final class UpdateGitHubRepositoryRequest extends FormRequest
             : Response::denyAsNotFound();
     }
 
+    /** @return array<string, array<int, mixed>|string> */
     public function rules(): array
     {
         return [
