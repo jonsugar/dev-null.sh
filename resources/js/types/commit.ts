@@ -27,6 +27,7 @@ export type Commit = {
     user_id: string;
     parent_id: string | null;
     body: string;
+    source_url?: string | null;
     body_segments: BodySegment[];
     status: CommitStatus;
     series_id: string | null;

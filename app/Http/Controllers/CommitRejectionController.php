@@ -16,8 +16,10 @@ final readonly class CommitRejectionController
     {
         /** @var string|null $reason */
         $reason = $request->validated('reason');
+        /** @var string|null $body */
+        $body = $request->validated('body');
 
-        $action->handle($commit, CommitStatus::Rejected, $reason);
+        $action->handle($commit, CommitStatus::Rejected, $reason, $body);
 
         return back();
     }

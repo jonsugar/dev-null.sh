@@ -14,6 +14,9 @@ use App\Http\Controllers\CommitReplyController;
 use App\Http\Controllers\CommitSeriesController;
 use App\Http\Controllers\CommitStarController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\GitHubPostController;
+use App\Http\Controllers\GitHubPostSettingController;
+use App\Http\Controllers\GitHubRepositoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\MentionSuggestionController;
@@ -117,6 +120,12 @@ Route::middleware('auth')->group(function (): void {
     // User Profile...
     Route::get('settings', fn () => to_route('user-profile.edit'));
     Route::get('settings/profile', [UserProfileController::class, 'edit'])->name('user-profile.edit');
+    Route::get('settings/github', [GitHubRepositoryController::class, 'show'])->name('github-settings.show');
+    Route::post('settings/github/repositories', [GitHubRepositoryController::class, 'store'])->name('github-repository.store');
+    Route::put('settings/github/repositories/{repository}', [GitHubRepositoryController::class, 'update'])->name('github-repository.update');
+    Route::delete('settings/github/repositories/{repository}', [GitHubRepositoryController::class, 'destroy'])->name('github-repository.destroy');
+    Route::put('settings/github/posts/approval', [GitHubPostSettingController::class, 'update'])->name('github-post-setting.update');
+    Route::put('github-posts/{commit}', [GitHubPostController::class, 'update'])->name('github-post.update');
     Route::get('settings/export', ExportController::class)->name('export');
 
     // User Lane...

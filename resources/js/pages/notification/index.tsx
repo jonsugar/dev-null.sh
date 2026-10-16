@@ -3,6 +3,7 @@ import { AtSign, Check, MessageSquareReply, UserPlus, X } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import CommitController from '@/actions/App/Http/Controllers/CommitController';
 import { EmptyFeed } from '@/components/commit-feed';
+import GitHubPostReviewQueue from '@/components/github-post-review-queue';
 import { Spinner } from '@/components/ui/spinner';
 import { UserAvatar } from '@/components/user-avatar';
 import { useNow } from '@/hooks/use-now';
@@ -10,12 +11,14 @@ import AppLayout from '@/layouts/app-layout';
 import { emojify } from '@/lib/emoji';
 import { cn, formatRelativeTime, laneColor } from '@/lib/utils';
 import { show } from '@/routes/user';
-import type { CursorPaginated, Notification } from '@/types';
+import type { Commit, CursorPaginated, Notification } from '@/types';
 
 export default function Index({
     notifications,
+    pendingGitHubPosts,
 }: {
     notifications: CursorPaginated<Notification>;
+    pendingGitHubPosts: Commit[];
 }) {
     return (
         <>
@@ -24,6 +27,8 @@ export default function Index({
             <div className="sticky top-0 z-10 flex h-14 items-center border-b bg-card px-4 sm:px-6">
                 <h1 className="font-semibold">Notifications</h1>
             </div>
+
+            <GitHubPostReviewQueue commits={pendingGitHubPosts} />
 
             {notifications.data.length === 0 ? (
                 <div className="px-6 py-16 text-center sm:px-12">

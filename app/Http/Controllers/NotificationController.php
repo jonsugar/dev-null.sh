@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\UpdateNotificationsReadAt;
+use App\Enums\CommitStatus;
+use App\Models\Commit;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
@@ -20,6 +22,13 @@ final readonly class NotificationController
     public function index(#[CurrentUser] User $user, UpdateNotificationsReadAt $action): Response
     {
         return Inertia::render('notification/index', [
+            'pendingGitHubPosts' => Commit::query()
+                ->where('user_id', $user->id)
+                ->where('status', CommitStatus::Pending)
+                ->whereNotNull('source_url')
+                ->with('user')
+                ->oldest()
+                ->get(),
             'notifications' => Inertia::scroll(function () use ($user, $action): CursorPaginator {
                 $notifications = $user->notifications()
                     ->relevant()

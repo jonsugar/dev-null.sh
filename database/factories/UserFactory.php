@@ -31,6 +31,7 @@ final class UserFactory extends Factory
             'website' => fake()->url(),
             'company' => fake()->company(),
             'has_sponsors_listing' => false,
+            'github_posts_require_approval' => true,
             'preferred_lane' => null,
             'remember_token' => Str::random(10),
         ];

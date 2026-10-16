@@ -47,3 +47,19 @@ it('may not approve a commit as a non admin', function (): void {
 
     expect($commit->refresh()->status)->toBe(CommitStatus::Pending);
 });
+
+it('lets an author edit and approve their pending GitHub post', function (): void {
+    $user = User::factory()->create();
+    $commit = Commit::factory()->for($user)->pending()->create([
+        'body' => 'Original post',
+        'source_url' => 'https://github.com/example/project/compare/a...b',
+    ]);
+
+    $response = $this->actingAs($user)
+        ->post(route('commit-approval.store', $commit), ['body' => 'Edited post']);
+
+    $response->assertRedirect();
+
+    expect($commit->refresh()->status)->toBe(CommitStatus::Approved)
+        ->and($commit->body)->toBe('Edited post');
+});

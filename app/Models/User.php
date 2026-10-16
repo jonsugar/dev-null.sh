@@ -26,6 +26,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property-read string|null $website
  * @property-read string|null $company
  * @property-read bool $has_sponsors_listing
+ * @property-read bool $github_posts_require_approval
  * @property-read int|null $preferred_lane
  * @property-read string|null $pinned_commit_id
  * @property-read string|null $remember_token
@@ -43,6 +44,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 #[Hidden([
     'github_id',
+    'github_posts_require_approval',
     'email',
     'remember_token',
     'preferred_lane',
@@ -54,6 +56,10 @@ final class User extends Authenticatable
     use HasFactory;
 
     use HasUuids;
+
+    protected $attributes = [
+        'github_posts_require_approval' => true,
+    ];
 
     /**
      * @return array<string, string>
@@ -72,6 +78,7 @@ final class User extends Authenticatable
             'website' => 'string',
             'company' => 'string',
             'has_sponsors_listing' => 'boolean',
+            'github_posts_require_approval' => 'boolean',
             'preferred_lane' => 'integer',
             'pinned_commit_id' => 'string',
             'remember_token' => 'string',
@@ -94,6 +101,12 @@ final class User extends Authenticatable
     public function sshKeys(): HasMany
     {
         return $this->hasMany(SshKey::class);
+    }
+
+    /** @return HasMany<GitHubRepository, $this> */
+    public function githubRepositories(): HasMany
+    {
+        return $this->hasMany(GitHubRepository::class);
     }
 
     /**

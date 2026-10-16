@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $body
  * @property-read CommitStatus $status
  * @property-read string|null $link_preview_id
+ * @property-read string|null $source_url
+ * @property-read string|null $github_delivery_id
  * @property-read string|null $series_id
  * @property-read int|null $series_position
  * @property-read int|null $series_size
@@ -65,6 +67,8 @@ final class Commit extends Model
             'body' => 'string',
             'status' => CommitStatus::class,
             'link_preview_id' => 'string',
+            'source_url' => 'string',
+            'github_delivery_id' => 'string',
             'series_id' => 'string',
             'series_position' => 'integer',
             'series_size' => 'integer',

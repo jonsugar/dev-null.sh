@@ -7,9 +7,14 @@ use App\Http\Controllers\Api\UserCommitController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Cli\CommitController;
 use App\Http\Controllers\Cli\KeyLookupController;
+use App\Http\Controllers\GitHubWebhookController;
 use App\Http\Middleware\AuthenticateSshSignature;
 use App\Http\Middleware\ThrottleCommits;
 use Illuminate\Support\Facades\Route;
+
+Route::post('github/webhooks/{repository}', GitHubWebhookController::class)
+    ->whereUuid('repository')
+    ->name('github-webhook');
 
 Route::prefix('cli')->group(function (): void {
     Route::post('commits', [CommitController::class, 'store'])

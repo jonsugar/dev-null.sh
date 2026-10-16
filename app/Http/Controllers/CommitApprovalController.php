@@ -14,7 +14,10 @@ final readonly class CommitApprovalController
 {
     public function store(CreateCommitApprovalRequest $request, Commit $commit, UpdateCommitStatus $action): RedirectResponse
     {
-        $action->handle($commit, CommitStatus::Approved);
+        /** @var string|null $body */
+        $body = $request->validated('body');
+
+        $action->handle($commit, CommitStatus::Approved, body: $body);
 
         return back();
     }
