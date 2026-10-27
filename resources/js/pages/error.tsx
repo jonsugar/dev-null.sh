@@ -75,7 +75,7 @@ export default function ErrorPage({ status }: { status: Status }) {
         <>
             <Head title={copy.title} />
 
-            <main className="mx-auto flex min-h-svh w-full max-w-3xl items-center px-4 py-16 sm:px-8">
+            <main className="mx-auto flex min-h-[calc(var(--svh)*100)] w-full max-w-3xl items-center px-4 py-16 sm:px-8">
                 <ErrorMessage
                     command={copy.command}
                     headline={

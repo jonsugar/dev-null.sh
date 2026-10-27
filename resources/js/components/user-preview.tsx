@@ -24,6 +24,7 @@ import { UserSafetyMenu } from '@/components/user-safety-menu';
 import { signIn } from '@/lib/auth';
 import { exactCountTitle, formatCount } from '@/lib/numbers';
 import { toastWhenThrottled } from '@/lib/throttle';
+import { layoutPixels, layoutRect } from '@/lib/ui-scale';
 import { cn, laneColor } from '@/lib/utils';
 import { preview } from '@/routes/mention';
 import { show } from '@/routes/user';
@@ -74,27 +75,27 @@ async function fetchPreview(url: string): Promise<PreviewData> {
 }
 
 function positionFor(trigger: HTMLElement): Position {
-    const rect = trigger.getBoundingClientRect();
+    const rect = layoutRect(trigger);
     const left = Math.min(
         Math.max(rect.left, 8),
-        window.innerWidth - previewWidth - 8,
+        layoutPixels(window.innerWidth) - previewWidth - 8,
     );
 
-    return rect.bottom + 8 + previewHeight > window.innerHeight &&
+    return rect.bottom + 8 + previewHeight > layoutPixels(window.innerHeight) &&
         rect.top > previewHeight
-        ? { left, bottom: window.innerHeight - rect.top + 8 }
+        ? { left, bottom: layoutPixels(window.innerHeight) - rect.top + 8 }
         : { left, top: rect.bottom + 8 };
 }
 
 function positionAround(anchor: HTMLElement): Position {
-    const rect = anchor.getBoundingClientRect();
+    const rect = layoutRect(anchor);
     const left = rect.left + rect.width / 2 - avatarCentre;
     const top = rect.top + rect.height / 2 - avatarCentre;
 
     return {
         left: Math.min(
             Math.max(left, viewportMargin),
-            window.innerWidth - previewWidth - viewportMargin,
+            layoutPixels(window.innerWidth) - previewWidth - viewportMargin,
         ),
         top: Math.max(top, viewportMargin),
     };
@@ -228,7 +229,7 @@ export function UserPreview({
         const overflow =
             position.top +
             previewRef.current.offsetHeight -
-            (window.innerHeight - viewportMargin);
+            (layoutPixels(window.innerHeight) - viewportMargin);
         const top = Math.max(position.top - overflow, viewportMargin);
 
         if (overflow > 0 && top !== position.top) {

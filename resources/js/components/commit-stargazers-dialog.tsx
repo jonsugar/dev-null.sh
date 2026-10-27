@@ -69,7 +69,7 @@ export function CommitStargazersDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogTrigger asChild>{children}</DialogTrigger>
-            <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-sm">
+            <DialogContent className="max-h-[calc(var(--vh)*85)] overflow-y-auto sm:max-w-sm">
                 <DialogHeader className="text-left">
                     <DialogTitle className="text-base font-semibold">
                         Starred by

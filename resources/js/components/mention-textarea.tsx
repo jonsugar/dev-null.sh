@@ -12,6 +12,7 @@ import { emojifyInput, searchEmoji } from '@/lib/emoji';
 import { issueReferenceBeforeCaret } from '@/lib/issue-reference';
 import { suggestionPosition } from '@/lib/suggestion-position';
 import { toastWhenThrottled } from '@/lib/throttle';
+import { layoutPixels, layoutRect } from '@/lib/ui-scale';
 import { characterCount, cn, laneColor, limitCharacters } from '@/lib/utils';
 import type { OrgMember, User } from '@/types';
 
@@ -141,7 +142,7 @@ function characterRect(textarea: HTMLTextAreaElement, index: number) {
     mirror.appendChild(marker);
     document.body.appendChild(mirror);
 
-    const rect = textarea.getBoundingClientRect();
+    const rect = layoutRect(textarea);
     const lineHeight =
         Number.parseFloat(style.lineHeight) ||
         Number.parseFloat(style.fontSize) * 1.4;
@@ -160,12 +161,12 @@ function positionFor(textarea: HTMLTextAreaElement, index: number): Position {
     return suggestionPosition(
         character,
         {
-            left: viewport?.offsetLeft ?? 0,
-            top: viewport?.offsetTop ?? 0,
-            width: viewport?.width ?? window.innerWidth,
-            height: viewport?.height ?? window.innerHeight,
+            left: layoutPixels(viewport?.offsetLeft ?? 0),
+            top: layoutPixels(viewport?.offsetTop ?? 0),
+            width: layoutPixels(viewport?.width ?? window.innerWidth),
+            height: layoutPixels(viewport?.height ?? window.innerHeight),
         },
-        window.innerHeight,
+        layoutPixels(window.innerHeight),
     );
 }
 

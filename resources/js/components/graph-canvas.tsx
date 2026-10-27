@@ -31,6 +31,7 @@ import type {
     NodeAnimation,
     Point,
 } from '@/lib/graph';
+import { layoutPixels, layoutRect } from '@/lib/ui-scale';
 import { cn } from '@/lib/utils';
 
 export type GraphNodeSpec = Pick<
@@ -231,7 +232,7 @@ function leavingRow(
     box: DOMRect,
     container: Element,
 ): Leaving {
-    const rect = element.getBoundingClientRect();
+    const rect = layoutRect(element);
     let opacity = 1;
 
     for (
@@ -301,7 +302,7 @@ function layoutCentre(element: HTMLElement, container: Element): Point {
             y += shift.y;
         }
 
-        const rect = scaler.getBoundingClientRect();
+        const rect = layoutRect(scaler);
 
         return {
             x: rect.left + rect.width / 2 - scaler.offsetWidth / 2 + x,
@@ -309,7 +310,7 @@ function layoutCentre(element: HTMLElement, container: Element): Point {
         };
     }
 
-    const rect = element.getBoundingClientRect();
+    const rect = layoutRect(element);
 
     return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
 }
@@ -392,12 +393,14 @@ export function GraphCanvas({ children }: { children: ReactNode }) {
     const hasDrawn = useRef(false);
 
     const clip = useCallback(() => {
-        const box = containerRef.current?.getBoundingClientRect();
+        const box = containerRef.current
+            ? layoutRect(containerRef.current)
+            : undefined;
         const canvas = canvasRef.current;
 
         if (box && canvas) {
             // Large offscreen SVGs distort in Gecko's view-transition captures. Keep their painted area in the viewport.
-            canvas.style.clipPath = `inset(${Math.max(0, -box.top)}px 0 ${Math.max(0, box.bottom - window.innerHeight)}px 0)`;
+            canvas.style.clipPath = `inset(${Math.max(0, -box.top)}px 0 ${Math.max(0, box.bottom - layoutPixels(window.innerHeight))}px 0)`;
         }
     }, []);
 
@@ -408,7 +411,7 @@ export function GraphCanvas({ children }: { children: ReactNode }) {
             return;
         }
 
-        const box = container.getBoundingClientRect();
+        const box = layoutRect(container);
         clip();
         const rows = [
             ...container.querySelectorAll('[data-graph-leaving]'),
@@ -624,7 +627,7 @@ export function GraphCanvas({ children }: { children: ReactNode }) {
         };
     }, []);
     const canvasTop = useCallback(
-        () => containerRef.current?.getBoundingClientRect().top ?? 0,
+        () => (containerRef.current ? layoutRect(containerRef.current).top : 0),
         [],
     );
     const { entering, onDrawn } = useEnteringEdges(edges, timingOf, canvasTop);
@@ -865,7 +868,7 @@ function useEnteringEdges(
             : edges.filter(
                   (edge) =>
                       fresh.includes(edge.id) &&
-                      isOnScreen(edge, top, window.innerHeight),
+                      isOnScreen(edge, top, layoutPixels(window.innerHeight)),
               );
 
         // Lines already drawing keep going; those gone take their masks with them.

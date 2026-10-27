@@ -4,6 +4,7 @@ import Heading from '@/components/heading';
 import LaneDimmingTabs from '@/components/lane-dimming-tabs';
 import NavigationTabs from '@/components/navigation-tabs';
 import RepliesPerPageTabs from '@/components/replies-per-page-tabs';
+import UiScaleSlider from '@/components/ui-scale-slider';
 import WhoToFollowTabs from '@/components/who-to-follow-tabs';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
@@ -19,6 +20,14 @@ export default function Update() {
                     description="System follows your operating system, light by day and dark by night if that's how you have it set."
                 />
                 <AppearanceTabs />
+            </section>
+
+            <section className="border-t px-4 py-6 sm:px-6">
+                <Heading
+                    title="Interface size"
+                    description="Make the interface and text smaller or larger. Your choice is saved in this browser."
+                />
+                <UiScaleSlider />
             </section>
 
             <section className="hidden border-t px-4 py-6 sm:px-6 lg:block">

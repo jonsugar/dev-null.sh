@@ -90,7 +90,7 @@ export function CommitReportDialog({
             }}
         >
             {children}
-            <DialogContent className="max-h-[calc(var(--visual-viewport-height,100dvh)-2rem)] overflow-y-auto bg-card motion-reduce:animate-none">
+            <DialogContent className="max-h-[calc(var(--visual-viewport-height,calc(var(--dvh)*100))-2rem)] overflow-y-auto bg-card motion-reduce:animate-none">
                 <ReportForm
                     commit={commit}
                     onSendingChange={setIsSending}

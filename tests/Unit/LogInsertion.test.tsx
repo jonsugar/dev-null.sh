@@ -213,7 +213,9 @@ function insertAt(
             const i = visibilityListeners.indexOf(listener);
             if (i !== -1) visibilityListeners.splice(i, 1);
         },
-        documentElement: { style: { overflowAnchor: '' } },
+        documentElement: {
+            style: { overflowAnchor: '', getPropertyValue: () => '' },
+        },
     });
     vi.stubGlobal(
         'MutationObserver',

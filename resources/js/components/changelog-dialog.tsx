@@ -181,7 +181,7 @@ export function ChangelogDialog({
 }) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="flex max-h-[calc(var(--visual-viewport-height,100dvh)-2rem)] flex-col gap-0 overflow-hidden bg-popover p-0 sm:max-w-2xl">
+            <DialogContent className="flex max-h-[calc(var(--visual-viewport-height,calc(var(--dvh)*100))-2rem)] flex-col gap-0 overflow-hidden bg-popover p-0 sm:max-w-2xl">
                 <ChangelogContent
                     changelog={changelog}
                     hasFailed={hasFailed}

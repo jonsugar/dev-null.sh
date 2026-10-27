@@ -1498,7 +1498,7 @@ function ReplyComposer({
                     maxLength={maxRawBodyLength}
                     placeholder={`Reply to @${parent.user.handle}`}
                     className={cn(
-                        'col-start-1 row-start-1 block field-sizing-content max-h-[50dvh] min-h-9 w-full resize-none overflow-x-hidden overflow-y-auto bg-transparent px-1 text-base leading-relaxed outline-none placeholder:text-muted-foreground focus-visible:outline-none md:text-[15px]',
+                        'col-start-1 row-start-1 block field-sizing-content max-h-[calc(var(--dvh)*50)] min-h-9 w-full resize-none overflow-x-hidden overflow-y-auto bg-transparent px-1 text-base leading-relaxed outline-none placeholder:text-muted-foreground focus-visible:outline-none md:text-[15px]',
                         { invisible: preview.isPreviewing },
                     )}
                 />

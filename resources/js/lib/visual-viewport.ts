@@ -1,3 +1,5 @@
+import { layoutPixels } from './ui-scale.ts';
+
 const keyboardMinHeight = 120;
 
 /**
@@ -25,13 +27,16 @@ export function trackVisualViewport(): void {
 
         root.style.setProperty(
             '--visual-viewport-top',
-            `${viewport.offsetTop}px`,
+            `${layoutPixels(viewport.offsetTop)}px`,
         );
         root.style.setProperty(
             '--visual-viewport-height',
-            `${viewport.height}px`,
+            `${layoutPixels(viewport.height)}px`,
         );
-        root.style.setProperty('--visual-viewport-bottom', `${bottom}px`);
+        root.style.setProperty(
+            '--visual-viewport-bottom',
+            `${layoutPixels(bottom)}px`,
+        );
         root.toggleAttribute(
             'data-keyboard-open',
             isKeyboardOpen(
@@ -45,6 +50,7 @@ export function trackVisualViewport(): void {
     update();
     viewport.addEventListener('resize', update);
     viewport.addEventListener('scroll', update);
+    window.addEventListener('resize', update);
     document.addEventListener('focusin', update);
 }
 

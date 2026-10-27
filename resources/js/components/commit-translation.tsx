@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import CommitTranslationController from '@/actions/App/Http/Controllers/CommitTranslationController';
 import { useCommitNotFound } from '@/hooks/use-deleted-resources';
 import { signIn } from '@/lib/auth';
+import { layoutRect } from '@/lib/ui-scale';
 import type { Commit, CommitTranslation } from '@/types';
 
 export function useCommitTranslation(commit: Commit) {
@@ -34,7 +35,9 @@ export function useCommitTranslation(commit: Commit) {
         translation?.translated;
 
     const translate = async () => {
-        setBodyHeight(bodyRef.current?.getBoundingClientRect().height);
+        setBodyHeight(
+            bodyRef.current ? layoutRect(bodyRef.current).height : undefined,
+        );
 
         if (translation?.translated) {
             setDisplay('translated');
@@ -106,8 +109,9 @@ export function useCommitTranslation(commit: Commit) {
                             type="button"
                             onClick={() => {
                                 setBodyHeight(
-                                    bodyRef.current?.getBoundingClientRect()
-                                        .height,
+                                    bodyRef.current
+                                        ? layoutRect(bodyRef.current).height
+                                        : undefined,
                                 );
                                 setDisplay('original');
                             }}

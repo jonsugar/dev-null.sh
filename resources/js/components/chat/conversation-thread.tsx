@@ -1981,7 +1981,7 @@ function Composer({
                                         shownError !== null || undefined
                                     }
                                     className={cn(
-                                        'block field-sizing-content max-h-[min(10rem,calc(var(--visual-viewport-height,100dvh)/4))] min-h-10 w-full resize-none overflow-x-hidden rounded-lg border border-input bg-card px-4 py-2 text-base leading-snug outline-none focus-visible:border-primary focus-visible:outline-none aria-invalid:border-destructive md:text-[15px]',
+                                        'block field-sizing-content max-h-[min(10rem,calc(var(--visual-viewport-height,calc(var(--dvh)*100))/4))] min-h-10 w-full resize-none overflow-x-hidden rounded-lg border border-input bg-card px-4 py-2 text-base leading-snug outline-none focus-visible:border-primary focus-visible:outline-none aria-invalid:border-destructive md:text-[15px]',
                                         {
                                             'min-h-9 py-1.5 md:text-sm':
                                                 isCompact,

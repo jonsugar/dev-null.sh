@@ -1,3 +1,5 @@
+import { layoutPixels } from './ui-scale.ts';
+
 /**
  * The first row still showing at the top of a scroller, and how far below the scroller's top edge it starts.
  */
@@ -44,6 +46,6 @@ export function restoreScrollAnchor(
 
     // Only a real shift is corrected, so content loading elsewhere never interrupts a scroll in motion.
     if (Math.abs(shift) >= 1) {
-        scroller.scrollTop += shift;
+        scroller.scrollTop += layoutPixels(shift);
     }
 }

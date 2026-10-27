@@ -104,7 +104,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             {!isMessages && <ProductHuntBanner />}
             <div
                 data-nav={isLayoutOpen ? 'expanded' : 'collapsed'}
-                className="mx-auto flex min-h-svh w-full max-w-[1264px] justify-center"
+                className="mx-auto flex min-h-[calc(var(--svh)*100)] w-full max-w-[1264px] justify-center"
             >
                 {deletedPage === null && (
                     <NotificationCountPolling
@@ -114,7 +114,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 )}
                 <div
                     data-nav-rail
-                    className="sticky top-[var(--launch-banner-height,0px)] hidden h-[calc(100svh-var(--launch-banner-height,0px))] w-20 shrink-0 md:block lg:w-(--sidebar-width)"
+                    className="sticky top-[var(--launch-banner-height,0px)] hidden h-[calc(calc(var(--svh)*100)-var(--launch-banner-height,0px))] w-20 shrink-0 md:block lg:w-(--sidebar-width)"
                 >
                     <AppNav onSearch={openSearch} onCompose={compose} />
                 </div>

@@ -7,7 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { useNewVersionToast } from "@/hooks/use-new-version-toast"
 
 const aboveMobileNav = {
-  bottom: "calc(var(--mobile-nav-height, 4.5rem + env(safe-area-inset-bottom)) + 0.75rem)",
+  bottom: "calc(var(--mobile-nav-height, 4.5rem + calc(env(safe-area-inset-bottom)/var(--ui-scale,1))) + 0.75rem)",
 }
 
 const aboveChatDock = {

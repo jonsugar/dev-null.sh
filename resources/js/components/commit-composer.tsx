@@ -238,7 +238,7 @@ function CommitComposerBody({
                         {issue.command && (
                             <div
                                 aria-hidden="true"
-                                className="invisible col-start-1 row-start-1 max-h-[60dvh] overflow-hidden py-1.5 text-[17px] leading-relaxed whitespace-pre-wrap"
+                                className="invisible col-start-1 row-start-1 max-h-[calc(var(--dvh)*60)] overflow-hidden py-1.5 text-[17px] leading-relaxed whitespace-pre-wrap"
                             >
                                 {issue.command.placeholder}
                             </div>
@@ -276,7 +276,7 @@ function CommitComposerBody({
                             aria-invalid={error ? true : undefined}
                             aria-describedby={`${id}-count`}
                             className={cn(
-                                'col-start-1 row-start-1 block field-sizing-content max-h-[60dvh] min-h-10 w-full resize-none overflow-x-hidden overflow-y-auto bg-transparent py-1.5 text-[17px] leading-relaxed outline-none placeholder:text-muted-foreground focus-visible:outline-none',
+                                'col-start-1 row-start-1 block field-sizing-content max-h-[calc(var(--dvh)*60)] min-h-10 w-full resize-none overflow-x-hidden overflow-y-auto bg-transparent py-1.5 text-[17px] leading-relaxed outline-none placeholder:text-muted-foreground focus-visible:outline-none',
                                 {
                                     invisible: preview.isPreviewing,
                                     'max-h-none': isInDialog,

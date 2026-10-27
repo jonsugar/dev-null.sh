@@ -1,6 +1,7 @@
 import type { CSSProperties, MouseEvent, ReactNode } from 'react';
 import { useRef, useState } from 'react';
 import { exactCountTitle, formatCount } from '@/lib/numbers';
+import { layoutRect } from '@/lib/ui-scale';
 import { clockTimeOf, cn, localDayKey } from '@/lib/utils';
 import type { Activity, ActivityBucket, ActivityScale } from '@/types';
 
@@ -240,8 +241,10 @@ export function ActivityCells({
         bucket: ActivityBucket,
         event: MouseEvent<HTMLSpanElement>,
     ) => {
-        const container = containerRef.current?.getBoundingClientRect();
-        const cell = event.currentTarget.getBoundingClientRect();
+        const container = containerRef.current
+            ? layoutRect(containerRef.current)
+            : undefined;
+        const cell = layoutRect(event.currentTarget);
 
         if (!container) {
             return;

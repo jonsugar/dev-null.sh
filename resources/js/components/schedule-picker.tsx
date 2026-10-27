@@ -115,7 +115,7 @@ export function SchedulePicker({
             <PopoverContent
                 align="start"
                 collisionPadding={16}
-                className="max-h-[calc(100dvh-2rem)] w-auto overflow-y-auto p-0"
+                className="max-h-[calc(calc(var(--dvh)*100)-2rem)] w-auto overflow-y-auto p-0"
             >
                 <Calendar
                     mode="single"

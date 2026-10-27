@@ -287,12 +287,12 @@ export default function OperationsLayout({ children }: PropsWithChildren) {
     };
 
     return (
-        <div className="min-h-svh bg-background lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
+        <div className="min-h-[calc(var(--svh)*100)] bg-background lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
             {polls && isLive && (
                 <Poll key={component} only={POLL_PROPS[page] ?? []} />
             )}
 
-            <aside className="sticky top-0 hidden h-svh flex-col border-r bg-card lg:flex">
+            <aside className="sticky top-0 hidden h-[calc(var(--svh)*100)] flex-col border-r bg-card lg:flex">
                 <div className="flex h-14 shrink-0 items-center px-4">
                     <Brand />
                 </div>

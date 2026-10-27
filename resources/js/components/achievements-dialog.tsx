@@ -71,7 +71,7 @@ export function AchievementsDialog({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogFloatingContent
-                className="max-h-[min(85vh,calc(var(--visual-viewport-height,100svh)-6rem))] sm:max-w-xl"
+                className="max-h-[min(calc(var(--vh)*85),calc(var(--visual-viewport-height,calc(var(--svh)*100))-6rem))] sm:max-w-xl"
                 style={{ '--lane': lane } as CSSProperties}
             >
                 <DialogHeader className="text-left">

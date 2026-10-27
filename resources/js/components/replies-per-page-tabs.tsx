@@ -32,7 +32,7 @@ export default function RepliesPerPageTabs() {
             }))}
             value={selected}
             onChange={select}
-            className="tabular-nums"
+            className="max-w-full flex-wrap tabular-nums"
         />
     );
 }

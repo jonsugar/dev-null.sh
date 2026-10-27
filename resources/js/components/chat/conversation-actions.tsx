@@ -287,7 +287,7 @@ export function ConversationActions({
                 onOpenChange={(open) => changeOpen(false, false, open)}
             >
                 <DialogContent
-                    className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-sm"
+                    className="max-h-[calc(calc(var(--dvh)*100)-2rem)] overflow-y-auto sm:max-w-sm"
                     onClick={(event) => event.stopPropagation()}
                     onCloseAutoFocus={closeAutoFocus}
                 >

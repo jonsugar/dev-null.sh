@@ -49,7 +49,7 @@ export function DeletedPageDialog({ page }: { page: DeletedPage }) {
                     data-test="deleted-page-dialog"
                     onEscapeKeyDown={(event) => event.preventDefault()}
                     onInteractOutside={(event) => event.preventDefault()}
-                    className="fixed inset-0 z-60 flex h-dvh animate-in overflow-y-auto overscroll-contain px-4 py-16 fade-in-0 outline-none sm:px-8"
+                    className="fixed inset-0 z-60 flex h-[calc(var(--dvh)*100)] animate-in overflow-y-auto overscroll-contain px-4 py-16 fade-in-0 outline-none sm:px-8"
                 >
                     <ErrorMessage
                         className="m-auto max-w-3xl"

@@ -48,6 +48,7 @@ import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { useNavOpen } from '@/hooks/use-nav-open';
 import { useKeyLabels } from '@/lib/keyboard';
+import { layoutRect } from '@/lib/ui-scale';
 import { browserTimeZone, cn, toUrl } from '@/lib/utils';
 import { home, login } from '@/routes';
 import { show } from '@/routes/user';
@@ -558,7 +559,7 @@ export function MobileNav({ children }: { children?: ReactNode }) {
         const root = document.documentElement;
         // Hidden while the keyboard is open, it keeps its height, so toasts above it do not drop onto it on the way back.
         const updateHeight = () => {
-            const { height } = element.getBoundingClientRect();
+            const { height } = layoutRect(element);
 
             if (height > 0) {
                 root.style.setProperty('--mobile-nav-height', `${height}px`);
@@ -579,7 +580,7 @@ export function MobileNav({ children }: { children?: ReactNode }) {
         <nav
             ref={nav}
             aria-label="Main"
-            className="fixed inset-x-0 bottom-0 z-20 flex border-t bg-card pb-[env(safe-area-inset-bottom)] [view-transition-name:mobile-nav] md:hidden [:root[data-keyboard-open]_&]:hidden"
+            className="fixed inset-x-0 bottom-0 z-20 flex border-t bg-card pb-[calc(env(safe-area-inset-bottom)/var(--ui-scale,1))] [view-transition-name:mobile-nav] md:hidden [:root[data-keyboard-open]_&]:hidden"
         >
             {children}
             {items.map((item) => (

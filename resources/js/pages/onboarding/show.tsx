@@ -874,7 +874,7 @@ export default function Show({
             <Head title="Setup" />
 
             <div
-                className="mx-auto flex min-h-svh w-full max-w-2xl flex-col px-4 pt-6 pb-16 sm:px-8 sm:pt-10"
+                className="mx-auto flex min-h-[calc(var(--svh)*100)] w-full max-w-2xl flex-col px-4 pt-6 pb-16 sm:px-8 sm:pt-10"
                 style={
                     {
                         '--lane': laneColor(selectedLane ?? automaticLane),

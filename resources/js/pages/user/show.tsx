@@ -430,7 +430,7 @@ export default function Show({
                 lane={lane}
             />
 
-            <div className="min-h-dvh">
+            <div className="min-h-[calc(var(--dvh)*100)]">
                 <PageTabs
                     label="Profile feed"
                     preserveScroll

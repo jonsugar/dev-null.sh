@@ -90,6 +90,7 @@ function setup(reducedMotion = false, initialScrollTop = 0) {
         removeEventListener: vi.fn(),
     });
     vi.stubGlobal('document', {
+        documentElement: { style: { getPropertyValue: () => '1' } },
         hidden: true,
         addEventListener: vi.fn(),
         removeEventListener: vi.fn(),

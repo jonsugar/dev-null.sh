@@ -28,7 +28,10 @@ export function PageTabs({
     const indicatorName = `tab-indicator-${label.toLowerCase().replaceAll(/[^a-z0-9]+/gu, '-')}`;
 
     return (
-        <nav aria-label={label} className="flex border-b">
+        <nav
+            aria-label={label}
+            className="flex scrollbar-none overflow-x-auto border-b"
+        >
             {tabs.map((tab) => (
                 <Link
                     key={tab.title}
@@ -45,7 +48,7 @@ export function PageTabs({
                     }
                     aria-current={tab.isActive ? 'page' : undefined}
                     className={cn(
-                        'relative flex flex-1 justify-center text-[15px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
+                        'relative flex min-w-max flex-1 justify-center px-2 text-[15px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
                         { 'text-foreground': tab.isActive },
                     )}
                 >

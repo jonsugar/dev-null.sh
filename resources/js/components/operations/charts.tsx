@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import type { PointerEvent, ReactNode } from 'react';
 import { formatCount } from '@/lib/numbers';
+import { layoutPixels, layoutRect } from '@/lib/ui-scale';
 import { cn } from '@/lib/utils';
 
 const AXIS_WIDTH = 40;
@@ -25,7 +26,7 @@ function useWidth<T extends HTMLElement>() {
             setWidth(Math.round(entry.contentRect.width)),
         );
 
-        setWidth(Math.round(element.getBoundingClientRect().width));
+        setWidth(Math.round(layoutRect(element).width));
         observer.observe(element);
 
         return () => observer.disconnect();
@@ -254,7 +255,7 @@ export function LineChart({
 
     const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
         const box = event.currentTarget.getBoundingClientRect();
-        const offset = event.clientX - box.left - AXIS_WIDTH;
+        const offset = layoutPixels(event.clientX - box.left) - AXIS_WIDTH;
         const index = Math.round(
             (offset / Math.max(1, plotWidth)) * (days.length - 1),
         );

@@ -55,7 +55,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[calc(var(--visual-viewport-top,0px)+var(--visual-viewport-height,100svh)/2)] left-[50%] z-50 grid max-h-[calc(var(--visual-viewport-height,100svh)-2rem)] w-full max-w-[calc(100%-2rem)] overflow-y-auto -translate-1/2 gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
+          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[calc(var(--visual-viewport-top,0px)+var(--visual-viewport-height,calc(var(--svh)*100))/2)] left-[50%] z-50 grid max-h-[calc(var(--visual-viewport-height,calc(var(--svh)*100))-2rem)] w-full max-w-[calc(100%-2rem)] overflow-y-auto -translate-1/2 gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
           className
         )}
         {...props}
@@ -91,7 +91,7 @@ function DialogFloatingContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed top-[calc(var(--visual-viewport-top,0px)+var(--visual-viewport-height,100svh)/2+1.5rem)] left-1/2 z-50 max-h-[calc(var(--visual-viewport-height,100svh)-6rem)] w-full max-w-[calc(100%-2rem)] -translate-1/2 outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-200 sm:max-w-lg",
+          "fixed top-[calc(var(--visual-viewport-top,0px)+var(--visual-viewport-height,calc(var(--svh)*100))/2+1.5rem)] left-1/2 z-50 max-h-[calc(var(--visual-viewport-height,calc(var(--svh)*100))-6rem)] w-full max-w-[calc(100%-2rem)] -translate-1/2 outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-200 sm:max-w-lg",
           className
         )}
         {...props}

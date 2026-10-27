@@ -32,6 +32,7 @@ import {
 import { WordmarkText } from '@/components/wordmark-text';
 import { dropConfetti } from '@/lib/confetti';
 import { formatCount, formatExactCount } from '@/lib/numbers';
+import { layoutRect } from '@/lib/ui-scale';
 import { cn } from '@/lib/utils';
 import type { Achievements } from '@/types';
 
@@ -86,7 +87,7 @@ export function AchievementsShelf({
         const measure = () => {
             const widths = Array.from(
                 row.querySelectorAll<HTMLElement>('[data-earned-badge]'),
-                (badge) => badge.getBoundingClientRect().width,
+                (badge) => layoutRect(badge).width,
             );
             const gap = parseFloat(getComputedStyle(row).columnGap);
             const total = widths.reduce(

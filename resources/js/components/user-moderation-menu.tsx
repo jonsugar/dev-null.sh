@@ -194,7 +194,7 @@ function ModerationDialog({
                 }
             }}
         >
-            <DialogContent className="max-h-[calc(var(--visual-viewport-height,100dvh)-2rem)] overflow-y-auto">
+            <DialogContent className="max-h-[calc(var(--visual-viewport-height,calc(var(--dvh)*100))-2rem)] overflow-y-auto">
                 <DialogTitle>
                     {isBan
                         ? `Ban @${user.handle}?`

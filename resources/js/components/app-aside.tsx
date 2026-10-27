@@ -36,7 +36,7 @@ export function AppAside({
     );
 
     return (
-        <aside className="sticky top-0 hidden h-svh w-80 shrink-0 scrollbar-none flex-col gap-8 overflow-y-auto p-6 xl:flex">
+        <aside className="sticky top-0 hidden h-[calc(var(--svh)*100)] w-80 shrink-0 scrollbar-none flex-col gap-8 overflow-y-auto p-6 xl:flex">
             <button
                 type="button"
                 onClick={onSearch}

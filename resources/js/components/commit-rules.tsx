@@ -83,7 +83,7 @@ export function CommitRulesDialog({
             onOpenChange={commitRules.setShowing}
         >
             <DialogContent
-                className="max-h-[calc(var(--visual-viewport-height,100dvh)-2rem)] overflow-y-auto"
+                className="max-h-[calc(var(--visual-viewport-height,calc(var(--dvh)*100))-2rem)] overflow-y-auto"
                 data-test="commit-rules-dialog"
             >
                 <DialogTitle>Before your first commit</DialogTitle>

@@ -970,7 +970,7 @@ export function ReactionSheet({
                         }
                     }}
                     className={cn(
-                        'fixed inset-x-0 top-[var(--visual-viewport-top,0px)] z-50 flex h-[var(--visual-viewport-height,100dvh)] flex-col px-3 pt-[max(1rem,env(safe-area-inset-top))] outline-none select-none [-webkit-touch-callout:none]',
+                        'fixed inset-x-0 top-[var(--visual-viewport-top,0px)] z-50 flex h-[var(--visual-viewport-height,calc(var(--dvh)*100))] flex-col px-3 pt-[max(1rem,calc(env(safe-area-inset-top)/var(--ui-scale,1)))] outline-none select-none [-webkit-touch-callout:none]',
                         { '[&_[data-sheet-part]]:pointer-events-none': isHeld },
                     )}
                     data-test="reaction-sheet"
@@ -1028,7 +1028,7 @@ export function ReactionSheet({
                         </div>
                         <div
                             data-sheet-part
-                            className="max-h-[30dvh] max-w-[85%] overflow-hidden"
+                            className="max-h-[calc(var(--dvh)*30)] max-w-[85%] overflow-hidden"
                         >
                             {preview}
                         </div>
@@ -1128,7 +1128,7 @@ function PickerSheet({
                     : undefined
             }
             className={cn(
-                '-mx-3 mt-auto flex h-[min(calc(var(--visual-viewport-height,100dvh)*0.6),28rem)] flex-col rounded-t-lg border-t bg-popover pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_30px_-16px_rgb(0_0_0/0.45)] motion-safe:animate-in motion-safe:slide-in-from-bottom',
+                '-mx-3 mt-auto flex h-[min(calc(var(--visual-viewport-height,calc(var(--dvh)*100))*0.6),28rem)] flex-col rounded-t-lg border-t bg-popover pb-[calc(env(safe-area-inset-bottom)/var(--ui-scale,1))] shadow-[0_-12px_30px_-16px_rgb(0_0_0/0.45)] motion-safe:animate-in motion-safe:slide-in-from-bottom',
                 { 'transition-transform duration-200': !isDragging },
             )}
             data-test="emoji-sheet"

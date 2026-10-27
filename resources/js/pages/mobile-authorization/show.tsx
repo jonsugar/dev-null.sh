@@ -149,7 +149,7 @@ function Page({
             <Head title={title} />
 
             <main
-                className="mx-auto flex min-h-svh w-full max-w-3xl items-center px-4 py-16 sm:px-8"
+                className="mx-auto flex min-h-[calc(var(--svh)*100)] w-full max-w-3xl items-center px-4 py-16 sm:px-8"
                 style={{ '--lane': lane } as CSSProperties}
             >
                 <ol className="w-full">

@@ -161,7 +161,7 @@ export function usePinMessage(target: ChatTarget, userId: string) {
             }}
         >
             <DialogContent
-                className="flex max-h-[calc(var(--visual-viewport-height,100dvh)-2rem)] flex-col gap-0 overflow-hidden p-0 sm:max-w-md"
+                className="flex max-h-[calc(var(--visual-viewport-height,calc(var(--dvh)*100))-2rem)] flex-col gap-0 overflow-hidden p-0 sm:max-w-md"
                 data-test="pin-warning"
             >
                 <div className="min-h-0 space-y-2 overflow-y-auto overscroll-contain px-5 pt-5 pb-4">
@@ -349,7 +349,7 @@ export function PinnedBanner({
                             event.preventDefault();
                         }
                     }}
-                    className="flex max-h-[min(var(--radix-popover-content-available-height),calc(var(--visual-viewport-height,100dvh)-2rem))] w-(--radix-popover-trigger-width) flex-col overflow-hidden rounded-none border-x-0 border-t-0 p-0 shadow-[0_12px_32px_-12px_rgb(0_0_0/0.35)]"
+                    className="flex max-h-[min(var(--radix-popover-content-available-height),calc(var(--visual-viewport-height,calc(var(--dvh)*100))-2rem))] w-(--radix-popover-trigger-width) flex-col overflow-hidden rounded-none border-x-0 border-t-0 p-0 shadow-[0_12px_32px_-12px_rgb(0_0_0/0.35)]"
                     data-test="pinned-panel"
                 >
                     <PinnedPanel

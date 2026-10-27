@@ -1,3 +1,5 @@
+import { layoutRect } from './ui-scale.ts';
+
 const slideDuration = 300;
 const growDuration = 200;
 const fadeOutDuration = 120;
@@ -97,8 +99,7 @@ function markAdded(
     );
 }
 
-const heightOf = (element: HTMLElement): number =>
-    element.getBoundingClientRect().height;
+const heightOf = (element: HTMLElement): number => layoutRect(element).height;
 
 function animateHeight(
     element: HTMLElement,
@@ -324,7 +325,7 @@ function slideThenGrow(open: boolean, slide: () => void): void {
     const onScreen = text.filter(isOnScreen);
     const breaks = onScreen.map(lineBreaks);
     const [final, finalBreaks] = inFinalLayout(open, () => [
-        [...media, ...text].map((element) => element.getBoundingClientRect()),
+        [...media, ...text].map((element) => layoutRect(element)),
         onScreen.map(lineBreaks),
     ]);
     const rewrapping = onScreen.filter(
@@ -393,9 +394,7 @@ function slideThenGrow(open: boolean, slide: () => void): void {
     }
 
     const mediaHeights = media.map(heightOf);
-    const textWidths = text.map(
-        (element) => element.getBoundingClientRect().width,
-    );
+    const textWidths = text.map((element) => layoutRect(element).width);
 
     media.forEach((element, index) => {
         element.style.height = `${mediaHeights[index]}px`;

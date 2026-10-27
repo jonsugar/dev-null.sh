@@ -24,6 +24,7 @@ import { useLastVisit } from '@/hooks/use-last-visit';
 import AppLayout from '@/layouts/app-layout';
 import { backgroundPollOptions } from '@/lib/background-poll';
 import { emojify } from '@/lib/emoji';
+import { layoutRect } from '@/lib/ui-scale';
 import { cn } from '@/lib/utils';
 import type { Commit, CursorPaginated, Log } from '@/types';
 
@@ -95,8 +96,7 @@ export default function Show({
             return;
         }
 
-        const updateHeight = () =>
-            setTabsHeight(tabs.getBoundingClientRect().height);
+        const updateHeight = () => setTabsHeight(layoutRect(tabs).height);
         updateHeight();
 
         const observer = new ResizeObserver(updateHeight);

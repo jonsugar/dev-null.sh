@@ -1,3 +1,4 @@
+import type { UiScale } from '@/lib/ui-scale';
 import type { SharedClock } from '@/lib/utils';
 import type { Auth, SuggestedUser, User } from '@/types/auth';
 import type { Commit } from '@/types/commit';
@@ -30,6 +31,7 @@ declare module '@inertiajs/core' {
             sidebarOpen: boolean;
             showsWhoToFollow: boolean;
             dimsLanes: boolean;
+            uiScale: UiScale;
             repliesPerPage: number;
             clock: SharedClock;
             /** When the server rendered the page, in milliseconds. */

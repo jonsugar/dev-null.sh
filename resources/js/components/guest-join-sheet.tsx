@@ -47,7 +47,7 @@ export function GuestJoinSheet() {
     return (
         <section
             aria-labelledby="guest-join-sheet"
-            className="fixed inset-x-0 bottom-0 z-30 flex flex-col gap-3.5 rounded-t-2xl border-t border-input bg-card px-5 pt-4 pb-[calc(1.75rem+env(safe-area-inset-bottom))] shadow-[0_-16px_40px_rgb(0_0_0/0.35)] duration-300 motion-safe:animate-in motion-safe:slide-in-from-bottom md:hidden [:root[data-keyboard-open]_&]:hidden"
+            className="fixed inset-x-0 bottom-0 z-30 flex flex-col gap-3.5 rounded-t-2xl border-t border-input bg-card px-5 pt-4 pb-[calc(1.75rem+calc(env(safe-area-inset-bottom)/var(--ui-scale,1)))] shadow-[0_-16px_40px_rgb(0_0_0/0.35)] duration-300 motion-safe:animate-in motion-safe:slide-in-from-bottom md:hidden [:root[data-keyboard-open]_&]:hidden"
             data-test="guest-join-sheet"
         >
             <div className="flex items-start justify-between gap-3">
