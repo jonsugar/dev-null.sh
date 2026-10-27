@@ -18,7 +18,7 @@ final readonly class HandleAppearance
     public function handle(Request $request, Closure $next): Response
     {
         View::share('appearance', $request->cookie('appearance') ?? 'system');
-        View::share('uiScale', UiScale::of($request)->value);
+        View::share('uiScale', UiScale::of($request)->percentage());
 
         return $next($request);
     }

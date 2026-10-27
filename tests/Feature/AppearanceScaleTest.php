@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Models\User;
 
-it('renders the browser size before first paint and shares it with settings', function (?string $cookie, int $scale, string $factor): void {
+it('renders the browser size before first paint and shares it with settings', function (?string $cookie, int|float $scale, string $factor): void {
     $this->withoutVite();
 
     if ($cookie !== null) {
@@ -19,10 +19,13 @@ it('renders the browser size before first paint and shares it with settings', fu
             ->component('appearance/update')
             ->where('uiScale', $scale));
 })->with([
-    'small' => ['90', 90, '0.9'],
+    'x-small' => ['90', 90, '0.9'],
+    'small' => ['95', 95, '0.95'],
     'default' => ['100', 100, '1'],
-    'large' => ['110', 110, '1.1'],
-    'largest' => ['125', 125, '1.25'],
+    'large' => ['105', 105, '1.05'],
+    'x-large' => ['110', 110, '1.1'],
+    'xx-large' => ['117.5', 117.5, '1.175'],
+    'xxx-large' => ['125', 125, '1.25'],
     'missing' => [null, 100, '1'],
     'unsupported' => ['200', 100, '1'],
     'empty' => ['', 100, '1'],

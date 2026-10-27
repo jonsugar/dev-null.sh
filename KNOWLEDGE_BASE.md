@@ -401,7 +401,7 @@ Sources: [report control](resources/js/components/commit-report-button.tsx), [re
 Settings → Appearance offers:
 
 - **Theme:** Light, Dark, or System.
-- **Interface size:** Small (90%), Default (100%), Large (110%), or Largest (125%). One slider scales the interface and text together; changes apply when you release it.
+- **Interface size:** XSmall (90%), Small (95%), Default (100%), Large (105%), XLarge (110%), XXLarge (117.5%), or XXXLarge (125%). One slider scales the interface and text together; changes apply when you release it.
 - **Navigation:** expanded or collapsed, on wide screens. The navigation also has its own collapse button.
 - **Lane dimming:** on by default; other commits fade while the pointer rests on a commit or its author.
 - **Replies:** how many replies show under a commit before "Show more": 1, 3, 5, 10, 15, 20, or 25 (3 by default).

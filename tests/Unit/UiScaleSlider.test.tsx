@@ -33,7 +33,7 @@ const { useUiScale } = await import('../../resources/js/hooks/use-ui-scale');
 
 afterEach(() => vi.unstubAllGlobals());
 
-test('previews while dragging, saves on commit, and keeps the choice over stale page props', () => {
+test('applies and saves each increment while dragging and keeps the choice over stale page props', () => {
     const properties = new Map<string, string>();
     const document = {
         cookie: '',
@@ -56,33 +56,36 @@ test('previews while dragging, saves on commit, and keeps the choice over stale 
         >;
     };
 
-    assert.deepEqual(control().props.value, [1]);
-    control().props.onValueChange?.([3]);
+    assert.deepEqual(control().props.value, [2]);
+    control().props.onValueChange?.([6]);
     assert.equal(
         control().props.thumbProps?.['aria-valuetext'],
-        'Largest, 125%',
+        'XXXLarge, 125%',
     );
-    assert.equal(document.cookie, '');
-    assert.equal(resize.mock.calls.length, 0);
-
-    control().props.onValueCommit?.([3]);
     assert.match(
         document.cookie,
         /^ui_scale=125;path=\/;max-age=31536000;SameSite=Lax$/,
     );
     assert.equal(properties.get('--ui-scale'), '1.25');
+    assert.equal(resize.mock.calls.length, 1);
+
+    control().props.onValueCommit?.([6]);
     assert.equal(scrollIntoView.mock.calls.length, 1);
     assert.equal(resize.mock.calls.length, 1);
 
     pageScale = 90;
     assert.equal(useUiScale().uiScale, 125);
     position = undefined;
-    assert.deepEqual(control().props.value, [3]);
+    assert.deepEqual(control().props.value, [6]);
 
     for (const [value, scale] of [
         [0, 90],
-        [1, 100],
-        [2, 110],
+        [1, 95],
+        [2, 100],
+        [3, 105],
+        [4, 110],
+        [5, 117.5],
+        [6, 125],
     ] as const) {
         control().props.onValueChange?.([value]);
         control().props.onValueCommit?.([value]);

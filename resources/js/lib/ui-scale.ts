@@ -1,8 +1,11 @@
 export const uiScales = [
-    { label: 'Small', value: 90 },
+    { label: 'XSmall', value: 90 },
+    { label: 'Small', value: 95 },
     { label: 'Default', value: 100 },
-    { label: 'Large', value: 110 },
-    { label: 'Largest', value: 125 },
+    { label: 'Large', value: 105 },
+    { label: 'XLarge', value: 110 },
+    { label: 'XXLarge', value: 117.5 },
+    { label: 'XXXLarge', value: 125 },
 ] as const;
 
 export type UiScale = (typeof uiScales)[number]['value'];

@@ -24,7 +24,7 @@ export default function Update() {
 
             <section className="border-t px-4 py-6 sm:px-6">
                 <Heading
-                    title="Interface size"
+                    title="Interface scaling"
                     description="Make the interface and text smaller or larger. Your choice is saved in this browser."
                 />
                 <UiScaleSlider />

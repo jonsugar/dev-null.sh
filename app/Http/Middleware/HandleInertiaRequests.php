@@ -115,7 +115,7 @@ final class HandleInertiaRequests extends Middleware
                 ? resolve(LiveFollowingQuery::class)->get($user)
                 : collect(),
             'dimsLanes' => $request->cookie('lane_dimming') !== 'false',
-            'uiScale' => UiScale::of($request)->value,
+            'uiScale' => UiScale::of($request)->percentage(),
             'repliesPerPage' => RepliesPerPage::of($request)->value,
             'clock' => ReaderClock::of($request)->toArray(),
             // Relative times count from it on the server and while the browser hydrates the page, so both agree.
