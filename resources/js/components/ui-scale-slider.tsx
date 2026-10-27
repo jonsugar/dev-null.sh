@@ -13,7 +13,7 @@ export default function UiScaleSlider() {
     const selected = uiScales[position];
 
     return (
-        <div ref={control} className="min-w-0 max-w-sm flex-1 scroll-mt-36">
+        <div ref={control} className="max-w-sm min-w-0 flex-1 scroll-mt-36">
             <div className="flex items-center gap-2">
                 <span className="text-xs font-semibold">aA</span>
                 <Slider
